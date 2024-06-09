@@ -16,8 +16,9 @@ body {
 .board {
    display: flex;
    flex-direction: column;
-   justify-content: center;
+   justify-content: space-between;
    align-items: center;
+   margin-bottom: 60px;
 }
 .box{
     width: 40px;
@@ -26,6 +27,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 2px;
 }
 .boardRow {
     display: flex;
@@ -46,5 +48,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 2px;
 
 }
