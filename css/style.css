@@ -4,7 +4,7 @@
 
 body {
     height: 100%;
-    background-color: cadetblue;
+    background-color: whitesmoke;
     margin: 0;
     padding: 0;
     display: block;
@@ -14,8 +14,37 @@ body {
 }
 
 .board {
-    display: flex;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
 }
 .box{
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.boardRow {
+    display: flex;
+}
+#keyboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.keyboardRow {
+    display: flex;
+}
+.keyboard.button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
