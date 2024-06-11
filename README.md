@@ -1,5 +1,5 @@
 # Wordle Clone
-***Wordle*** is a fun guessing game that anyone can play! (img of wordle website here) 
+***Wordle*** is a fun guessing game that anyone can play! (img of wordle website here) This is a game I play daily with my friends. A fun way to challenge ourselves in a competetive way! Share your scores with your friends and become the Wordle champion!
 ## How To Play
 A 5-letter word will be chosen at random when you load the game. The goal of the game is to guess 5 letter words within 6 guesses.
 1. Any letters that you guess that also correspond to the same position of the word to guess will appear as green on both the keyboard and the board box. This lets you know a letter is correct in your guess position and the word to guess position. 
