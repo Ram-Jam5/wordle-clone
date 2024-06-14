@@ -1,32 +1,37 @@
 /*-------------------------------- Constants --------------------------------*/
-// word bank is already defined in the data.js sheet under const wordBanks
-// let row = 0; // set initial  row position to input text
-// let letter = 0; // set initial index to the first position when begining.
-// const wordToday = 'placeholder for function that randomizes a word daily'
-// let lastWordIndex = -1;
-// todays word is ADAPT
-// yesterday was ACUTE
+//fix checkword() currently concatenating enteredWord()
+//fix randomWord to be truly random daily. 
+// add win/loss messages to html
+// increment guessNumber each time row++ 
+// cases where the game breaks (more than 5 letters, guesses not in list etc)
+const maxRows = 6;
+const maxColumns =5;
 
 
 
 /*-------------------------------- Variables --------------------------------*/
-
-
+var row = 0;
+var column = 0;
+var guessNumber = 0;
+var gameOver = false;
+var guessedCorrectly = true;
+var isWordChecked = false;
 
 /*------------------------ Cached Element References ------------------------*/
-
+const boardRows = document.querySelectorAll('.boardRow');
+const boxes = document.querySelectorAll('.box');
 
 /*----------------------------- Event Listeners -----------------------------*/
 const keyButtonElement = document.querySelector('#keyboard'); // keyboard buttons
-console.dir(keyButtonElement);
 
 keyButtonElement.addEventListener('click', (event) => {
     const clickedKey = event.target;
-    const keyPressed = clickedKey.textContent
+    const keyPressed = clickedKey.innerText
     if (isKeyLetter(keyPressed)) {
         inputLetterKey(keyPressed);
     }else if (keyPressed === "Enter") {
-        inputEnterKey();
+        const enteredWord = getUserWord();
+        inputEnterKey(enteredWord);
     }else if (keyPressed === "&#x232b;"){
         inputDeleteKey();
     }
@@ -37,17 +42,22 @@ document.addEventListener('keydown', (event) => {
     if (isKeyLetter(keyPressed)) {
         inputLetterKey(keyPressed);
     }else if (keyPressed === "Enter") {
-        inputEnterKey();
+        const enteredWord = getUserWord();
+        inputEnterKey(enteredWord);
     }else if (keyPressed === "Backspace") {
         inputDeleteKey();
     }
 });
 /*-------------------------------- Functions --------------------------------*/
 let lastWordIndex =-1;
+const today = new Date(); // create a new date object with current date
+const randomWord = getWordToday(today);
+console.log('Random word for today:', randomWord);
+
 
 function getWordToday(date) {
     let day = date.getDate();
-    let index = day % wordBanks.length;
+    let index = (day % wordBanks.length);
     if (index === lastWordIndex){
         index = (index +1) % wordBanks.length;
     }
@@ -56,46 +66,110 @@ function getWordToday(date) {
 }
 
 
-const today = new Date(); // create a new date object with current date
-randomWord = getWordToday(today);
-console.log('Random word for today:', randomWord);
 
 function isKeyLetter(key) {
     return /^[a-zA-Z]$/.test(key);
 }
 
 function inputLetterKey(key) {
-    const boxes = document.querySelectorAll('.box');
-    for (let i = 0; i < boxes.length; i++) {
-        const box = boxes[i]
-        if (!box.textContent){
-            box.textContent = key.toUpperCase();
-            return;
+    if (!gameOver){
+        const currentRow = boardRows[row];
+        const box = currentRow.querySelectorAll('.box')[column];
+        if (!box.innerText && column < 5 && !isWordChecked) {
+            box.innerText = key.toUpperCase();
+            column++;
+            if (column >= 5) {
+                column = 0;
+            }
         }
     }
+   
     
 }
 
-function inputEnterKey() {
+
+function getUserWord() {
+    let enteredWord = '';
+    const boxes = document.querySelectorAll('.box');
+    boxes.forEach(box => {
+        enteredWord += box.innerText;
+    });
+    return enteredWord;
+}
+function clearRow() {
+    const currentRow =boardRows[row];
+    const boxes = currentRow.querySelectorAll('.box');
+    boxes.forEach(box => { 
+        box.innerText = '';
+    });
+}
+
+function checkWord() {
+    const enteredWord = getUserWord().toUpperCase();
+    console.log(enteredWord)
+    const wordBanksUpperCase = wordBanks.map(word => word.toUpperCase());
+
+    if (wordBanksUpperCase.includes(enteredWord)) {
+        const boxes = boardRows[row].querySelectorAll('.box');
+        var correctLetterCount = 0;
+
+        boxes.forEach((element, index) => {
+            const enteredLetter = element.innerText.toUpperCase();
+            const randomLetter = randomWord.toUpperCase().charAt(index);
+            const letterInRandomWord = randomWord.toUpperCase().includes(enteredLetter);
+
+            if (enteredLetter === randomLetter) {
+                correctLetterCount += 1;
+                element.classList.add('word-green');
+            } else if (letterInRandomWord) {
+                element.classList.add('word-yellow');
+            } else {
+                element.classList.add('word-gray');
+            }
+        });
+
+
+        if (correctLetterCount === maxColumns) {
+            gameOver = true;
+            guessedCorrectly = true;
+            console.log('nice you got it')
+        } else if (row === maxRows ) {
+            gameOver = true;
+            console.log('better luck next time')
+        }
+        row +=1;
+    } else {
+        console.log('here')
+    } 
     
+}
+
+function inputEnterKey(enteredWord) {
+    const wordLength = enteredWord.length;
+  if (wordLength < 5) {
+    console.log('not enough letters');
+  } else {
+    checkWord(enteredWord);
+   
+  }
+}  
+function nextRow() {
+    row++;
+    if (row >= boardRows.length) {
+        
+    }
 }
 function inputDeleteKey() {
-
+  const letterElements = boardRows[row].querySelectorAll('.box');
+  for (let index = letterElements.length -1; index >= 0; index--) {
+    const element = letterElements[index];
+    if (element.innerText !== '') {
+       element.innerText = '';
+       column -=1;
+       break; 
+    }
+  }
 }
 
 
-/* 
-select a random word, something to make sure this occurs only once daily for all users.
-need to see if the user inputed 5 letters, 
-    if not display "not enough letters"
-I'll need a function to check if the submitted word is in the word list.
-    if not needs to display message word not in list
-I'll need another function to check if the submitted word contains any characters in the key
-    if yes and in correct position change keyboard and box green
-    if yes and not in correct position change keyboard and box yellow
-    if no gray out box and keyboard
-Need to track turns? 
-How to implement iterating through the rows? 
-win message
-lose message
-*/
+

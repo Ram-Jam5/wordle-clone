@@ -53,3 +53,18 @@ body {
     margin: 2px;
     padding: 1px;
 }
+.word-green {
+    background-color: #52BE80;
+    color: white;
+}
+
+.word-yellow {
+    background-color: #d3de09;
+    color: black;
+}
+
+.word-gray {
+    background-color: #888888;
+    color: white;
+}
+
