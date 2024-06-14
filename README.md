@@ -11,7 +11,7 @@ A 5-letter word will be chosen at random when you load the game. The goal of the
 3. If any letter you guess isn't contained within the word to guess these boxes become grayed out on the board and the keyboard letters will also be grayed out. Don't use these letters in future guesses as you know the word doesn't contain it!
 4. These are the basic rules to the game. The win condition is to guess the word correctly within 6 guesses. If the player fails to guess the word in 6 guesses the player will lose.
 
-Try your luck here at my [Wordle]().
+Try your luck here at my [Wordle](https://ram-jam5.github.io/wordle-clone/).
 > Can you beat your friends? Share your score and how many guesses it took for you to get it!
 
 ### Attributions: I utilized a word list from [here](https://github.com/MrJanHorak/wordle-solution-helper/blob/main/src/data/wordle-words.json). This allowed me to simplify populating a word list.
