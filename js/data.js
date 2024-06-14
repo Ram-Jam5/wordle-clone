@@ -12971,4 +12971,3 @@ const wordBanks = ["humph",
   "zymes", 
   "zymic",
 ];
-console.dir(wordBanks);

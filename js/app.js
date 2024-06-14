@@ -1,15 +1,3 @@
-/*-------------------------------- Constants --------------------------------*/
-//fix checkword() currently concatenating enteredWord()
-//fix randomWord to be truly random daily. 
-// add win/loss messages to html
-// increment guessNumber each time row++ 
-// cases where the game breaks (more than 5 letters, guesses not in list etc)
-const maxRows = 6;
-const maxColumns =5;
-
-
-
-/*-------------------------------- Variables --------------------------------*/
 var row = 0;
 var column = 0;
 var guessNumber = 0;
@@ -17,12 +5,17 @@ var gameOver = false;
 var guessedCorrectly = true;
 var isWordChecked = false;
 
-/*------------------------ Cached Element References ------------------------*/
+const maxRows = 6;
+const maxColumns =5;
+const attemptedWords = [];
+const winMessageElement = document.getElementById('winMessage');
+const lossMessageElement = document.getElementById('lossMessage');
+const guessNumberElement = document.getElementById('guessNumber');
+const notInWordBanksElement = document.getElementById('notInWordBanks');
+const notEnoughLettersElement = document.getElementById('notEnoughLetters');
 const boardRows = document.querySelectorAll('.boardRow');
 const boxes = document.querySelectorAll('.box');
-
-/*----------------------------- Event Listeners -----------------------------*/
-const keyButtonElement = document.querySelector('#keyboard'); // keyboard buttons
+const keyButtonElement = document.querySelector('#keyboard'); 
 
 keyButtonElement.addEventListener('click', (event) => {
     const clickedKey = event.target;
@@ -48,12 +41,10 @@ document.addEventListener('keydown', (event) => {
         inputDeleteKey();
     }
 });
-/*-------------------------------- Functions --------------------------------*/
-let lastWordIndex =-1;
-const today = new Date(); // create a new date object with current date
-const randomWord = getWordToday(today);
-console.log('Random word for today:', randomWord);
 
+var lastWordIndex =-1;
+const today = new Date(); 
+const randomWord = getWordToday(today);
 
 function getWordToday(date) {
     let day = date.getDate();
@@ -74,13 +65,17 @@ function isKeyLetter(key) {
 function inputLetterKey(key) {
     if (!gameOver){
         const currentRow = boardRows[row];
-        const box = currentRow.querySelectorAll('.box')[column];
-        if (!box.innerText && column < 5 && !isWordChecked) {
-            box.innerText = key.toUpperCase();
-            column++;
-            if (column >= 5) {
-                column = 0;
-            }
+        const boxes = currentRow.querySelectorAll('.box');
+        if (column < boxes.length) {
+            const box = boxes[column];
+            if (!box.innerText && column < 5 && !isWordChecked) {
+                box.innerText = key.toUpperCase();
+                column++;
+                if (column >= 5) {
+                    column = 0;
+                }
+        }
+        
         }
     }
    
@@ -92,7 +87,7 @@ function getUserWord() {
     let enteredWord = '';
     const boxes = document.querySelectorAll('.box');
     boxes.forEach(box => {
-        enteredWord += box.innerText;
+        enteredWord += box.innerText; 
     });
     return enteredWord;
 }
@@ -105,7 +100,7 @@ function clearRow() {
 }
 
 function checkWord() {
-    const enteredWord = getUserWord().toUpperCase();
+    const enteredWord = attemptedWords[attemptedWords.length - 1];
     console.log(enteredWord)
     const wordBanksUpperCase = wordBanks.map(word => word.toUpperCase());
 
@@ -127,29 +122,54 @@ function checkWord() {
                 element.classList.add('word-gray');
             }
         });
-
+        
+        guessNumber++;
 
         if (correctLetterCount === maxColumns) {
             gameOver = true;
             guessedCorrectly = true;
-            console.log('nice you got it')
+            updateWinMessage(guessNumber);
         } else if (row === maxRows ) {
             gameOver = true;
-            console.log('better luck next time')
+            updateLossMessage(randomWord);
         }
         row +=1;
+        notInWordBanksElement.textContent = "";
+        notEnoughLettersElement.textContent = "";
     } else {
-        console.log('here')
+        updateNotInWordBanksMessage();
     } 
-    
+    function updateWinMessage(totalGuesses) {
+        const winText = `Congratulations! You guessed the word in ${totalGuesses}/6 guesses!`;
+        winMessageElement.textContent = winText;
+    }
+    function updateLossMessage(randomWord){
+        const lossMessage = `Sorry, you ran out of guesses. The word was ${randomWord}. Try again tomorrow.`;
+        lossMessageElement.textContent = lossMessage;
+    }
+    function updateNotInWordBanksMessage(){
+        const notInWordBanksMessage = "Sorry, word is not in word list.";
+        notInWordBanksElement.textContent = notInWordBanksMessage;
+    }
 }
 
+function updateNotEnoughLettersMessage() {
+    const notEnoughLettersMessage = "Must enter 5 letters.";
+    notEnoughLettersElement.textContent = notEnoughLettersMessage;
+}
 function inputEnterKey(enteredWord) {
     const wordLength = enteredWord.length;
-  if (wordLength < 5) {
-    console.log('not enough letters');
+    if (wordLength < 5) {
+        updateNotEnoughLettersMessage();
   } else {
-    checkWord(enteredWord);
+    const lettersGuessed =[];
+    const boxes = boardRows[row].querySelectorAll('.box');
+    boxes.forEach(box => {
+        lettersGuessed.push(box.innerText.toUpperCase());
+    });
+    const letterWord = lettersGuessed.join('');
+    attemptedWords.push(letterWord);
+    checkWord();
    
   }
 }  
@@ -165,7 +185,10 @@ function inputDeleteKey() {
     const element = letterElements[index];
     if (element.innerText !== '') {
        element.innerText = '';
-       column -=1;
+       column --;
+       if (column < 0) {
+        column = 0;
+       }
        break; 
     }
   }
