@@ -1,9 +1,9 @@
-var row = 0;
-var column = 0;
-var guessNumber = 0;
-var gameOver = false;
-var guessedCorrectly = true;
-var isWordChecked = false;
+let row = 0;
+let column = 0;
+let guessNumber = 0;
+let gameOver = false;
+let guessedCorrectly = true;
+let isWordChecked = false;
 
 const maxRows = 6;
 const maxColumns =5;
@@ -42,7 +42,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-var lastWordIndex =-1;
+let lastWordIndex =-1;
 const today = new Date(); 
 const randomWord = getWordToday(today);
 
@@ -106,7 +106,7 @@ function checkWord() {
 
     if (wordBanksUpperCase.includes(enteredWord)) {
         const boxes = boardRows[row].querySelectorAll('.box');
-        var correctLetterCount = 0;
+        let correctLetterCount = 0;
 
         boxes.forEach((element, index) => {
             const enteredLetter = element.innerText.toUpperCase();
