@@ -12,15 +12,17 @@
 <body>
     <header>
         <h1>Wordle</h1>
-        <h2>Instructions</h2>
-        <ol>
-            <li>Type your guesses into the boxes provided. You must enter exactly 5 letters.</li>
-            <li>Press "Enter" or click the "Enter" button on the keyboard to submit your guess.</li>
-            <li>If a letter is correct and in the correct position, it will appear in green.</li>
-            <li>If a letter is correct but in the wrong position, it will appear in yellow.</li>
-            <li>If a letter is incorrect, it will appear in gray.</li>
-            <li>Try to guess the word within 6 attempts to win!</li>
-        </ol>
+        <button id="instructionsButton">Instructions</button>
+        <div id="instructions">
+            <ol>
+                <li>Type your guesses into the boxes provided. You must enter exactly 5 letters.</li>
+                <li>Press "Enter" or click the "Enter" button on the keyboard to submit your guess.</li>
+                <li>If a letter is correct and in the correct position, it will appear in green.</li>
+                <li>If a letter is correct but in the wrong position, it will appear in yellow.</li>
+                <li>If a letter is incorrect, it will appear in gray.</li>
+                <li>Try to guess the word within 6 attempts to win!</li>
+            </ol>
+        </div>
         <div id="messages">
             <div id="winMessage"></div>
             <div id="guessNumber"></div>

@@ -1,13 +1,16 @@
+document.addEventListener('DOMContentLoaded', function() {
+
 let row = 0;
 let column = 0;
 let guessNumber = 0;
 let gameOver = false;
-let guessedCorrectly = true;
 let isWordChecked = false;
 
-const maxRows = 6;
+const maxRows = 5;
 const maxColumns =5;
 const attemptedWords = [];
+const instructionsButton =document.getElementById('instructionsButton')
+const instructions = document.getElementById('instructions')
 const winMessageElement = document.getElementById('winMessage');
 const lossMessageElement = document.getElementById('lossMessage');
 const guessNumberElement = document.getElementById('guessNumber');
@@ -17,6 +20,15 @@ const boardRows = document.querySelectorAll('.boardRow');
 const boxes = document.querySelectorAll('.box');
 const keyButtonElement = document.querySelector('#keyboard'); 
 
+//w3 schools toggling (hide/show element)
+instructionsButton.addEventListener('click', function() {
+    if (instructions.style.display === 'none' || instructions.style.display === '') {
+        instructions.style.display = 'block';
+    } else {
+        instructions.style.display = 'none';
+    }
+});
+
 keyButtonElement.addEventListener('click', (event) => {
     const clickedKey = event.target;
     const keyPressed = clickedKey.innerText
@@ -25,7 +37,7 @@ keyButtonElement.addEventListener('click', (event) => {
     }else if (keyPressed === "Enter") {
         const enteredWord = getUserWord();
         inputEnterKey(enteredWord);
-    }else if (keyPressed === "&#x232b;"){
+    }else if (keyPressed === "⌫"){
         inputDeleteKey();
     }
 });
@@ -42,21 +54,11 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-let lastWordIndex =-1;
-const today = new Date(); 
-const randomWord = getWordToday(today);
-
-function getWordToday(date) {
-    let day = date.getDate();
-    let index = (day % wordBanks.length);
-    if (index === lastWordIndex){
-        index = (index +1) % wordBanks.length;
-    }
-    lastWordIndex = index;
+function getWordToday() {
+    const index = Math.floor(Math.random() * wordBanks.length);
     return wordBanks[index];
 }
-
-
+const randomWord = getWordToday();
 
 function isKeyLetter(key) {
     return /^[a-zA-Z]$/.test(key);
@@ -91,21 +93,14 @@ function getUserWord() {
     });
     return enteredWord;
 }
-function clearRow() {
-    const currentRow =boardRows[row];
-    const boxes = currentRow.querySelectorAll('.box');
-    boxes.forEach(box => { 
-        box.innerText = '';
-    });
-}
 
 function checkWord() {
     const enteredWord = attemptedWords[attemptedWords.length - 1];
-    console.log(enteredWord)
     const wordBanksUpperCase = wordBanks.map(word => word.toUpperCase());
-
+   
     if (wordBanksUpperCase.includes(enteredWord)) {
         const boxes = boardRows[row].querySelectorAll('.box');
+       
         let correctLetterCount = 0;
 
         boxes.forEach((element, index) => {
@@ -122,7 +117,7 @@ function checkWord() {
                 element.classList.add('word-gray');
             }
         });
-        
+
         guessNumber++;
 
         if (correctLetterCount === maxColumns) {
@@ -138,7 +133,7 @@ function checkWord() {
         notEnoughLettersElement.textContent = "";
     } else {
         updateNotInWordBanksMessage();
-    } 
+    }
     function updateWinMessage(totalGuesses) {
         const winText = `Congratulations! You guessed the word in ${totalGuesses}/6 guesses!`;
         winMessageElement.textContent = winText;
@@ -173,12 +168,7 @@ function inputEnterKey(enteredWord) {
    
   }
 }  
-function nextRow() {
-    row++;
-    if (row >= boardRows.length) {
-        
-    }
-}
+
 function inputDeleteKey() {
   const letterElements = boardRows[row].querySelectorAll('.box');
   for (let index = letterElements.length -1; index >= 0; index--) {
@@ -193,6 +183,4 @@ function inputDeleteKey() {
     }
   }
 }
-
-
-
+});

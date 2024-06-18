@@ -1,18 +1,20 @@
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: #52527a;
 }
 
 body {
     height: 100%;
     width: 100%;
-    background-color: whitesmoke;
-    margin: 0;
-    padding: 0;
+    background-color: #52527a;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
     font-family: system-ui, sans-serif;
+    color: cornsilk;
 }
 header {
     display: flex;
@@ -20,6 +22,128 @@ header {
     align-items: center;
     
 }
+/* Extra small devices (phones, 600px and down) - from w3 schools */
+@media only screen and (max-width: 600px){
+    .board{
+        margin-bottom: 20px;
+        background-color: #52527a;
+    }
+
+    .box {
+        width: 12vw;
+        height: 12vw;
+        max-width: 40px;
+        max-height: 40px;
+        margin: 1vw;
+    }
+    .keyboard {
+        margin-top: 20px;
+    }
+    .keyboard.button {
+        width: 12vw;
+        height: 12vw;
+        max-width: 40px;
+        max-height: 40px;
+        margin: 1vw;
+    }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) - w3 schools*/
+@media only screen and (min-width: 600px) {
+    .board {
+        margin-bottom: 30px;
+        background-color: #52527a;
+    }
+    .box {
+       width: 60px;
+       height: 60px;
+       margin: 4px;
+    }
+    .keyboard {
+        margin-top: 30px;
+    }
+    .keyboard.button {
+       width: 60px;
+       height: 60px;
+       margin: 4px;
+    }
+}
+/* Medium devices (landscape tablets, 768px and up) - w3 schools*/
+@media only screen and (min-width: 768px) {
+    .board {
+        margin-bottom: 40px;
+        background-color: #52527a;
+
+    }
+    .box {
+       width: 80px;
+       height: 80px;
+       margin: 6px;
+    }
+    .keyboard {
+        margin-top: 40px;
+    }
+    .keyboard.button {
+      width: 80px;
+      height: 80px;
+      margin: 6px;
+    
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) - w3 schools*/
+@media only screen and (min-width: 992px) {
+    .board {
+        margin-bottom: 60px;
+        background-color: #52527a;
+
+    }
+    .box {
+        width: 5vw;
+        height: 5vw;
+        max-width: 100px;
+        margin: 2vw;
+    }
+    .keyboard {
+        margin-top: 60px;
+    }
+    .keyboard.button {
+        width: 5vw;
+        height: 5vw;
+        max-width: 100px;
+        max-height: 100px;
+        margin: 2vw;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .board {
+        margin-bottom: 80px;
+        background-color: #52527a;
+
+    }
+    .box {
+        width: 4vw;
+        height: 4vw;
+        max-width: 120px;
+        max-height: 120px;
+        margin: 2.5vw;
+    }
+    .keyboard {
+        margin-top: 80px;
+    }
+    .keyboard.button {
+        width: 4vw;
+        height: 4vw;
+        max-width: 120px;
+        max-height: 120px;
+        margin: 2.5vw;
+    }
+}
+
+
+
+
 .board {
    display: flex;
    flex-direction: column;
@@ -30,11 +154,12 @@ header {
 .box{
     width: 40px;
     height: 40px;
-    border: 1px solid black;
+    border: 1px solid cornsilk;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2px;
+    font-weight: bold;
 }
 .boardRow {
     display: flex;
@@ -45,18 +170,48 @@ header {
     justify-content: center;
     align-items: center;
 }
+#instructionsButton {
+    background-color:  #000407;
+    color: cornsilk;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+#instructions {
+    background-color: #52527a;
+    border: none;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+    color: cornsilk;
+    animation: fadeIn 0.5s ease-in-out;
+}
+#instructions ol {
+    font-size: 14px;
+    line-height: 1.6;
+}
+#instructions ol li {
+    margin-bottom: 10px;
+}
 .keyboardRow {
     display: flex;
 }
 .keyboard.button {
     width: 40px;
     height: 40px;
-    border: 1px solid black;
+    border: 1px solid cornsilk;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2px;
     padding: 1px;
+    cursor: pointer;
+    font-weight: bold;
 }
 .word-green {
     background-color: #52BE80;
@@ -64,12 +219,32 @@ header {
 }
 
 .word-yellow {
-    background-color: #d3de09;
-    color: black;
+    background-color: hsla(63, 92%, 45%, 0.63);
+    color: white;
 }
 
 .word-gray {
     background-color: #888888;
     color: white;
 }
+.keyboard-green {
+    background-color: #52BE80;
+    color: white;
+}
+.keyboard-yellow {
+    background-color: hsla(63, 92%, 45%, 0.63);
+    color: white;
+}
+.keyboard-gray {
+    background-color: #888888;
+    color: white;
+}
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
